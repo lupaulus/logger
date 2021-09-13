@@ -21,23 +21,26 @@ subprojects { project ->
   group = GROUP
   version = VERSION_NAME
 
-  apply plugin: 'checkstyle'
-
-  task checkstyle(type: Checkstyle) {
-    configFile rootProject.file('checkstyle.xml')
-    source 'src/main/java'
-    ignoreFailures false
-    showViolations true
-    include '**/*.java'
-
-    classpath = files()
-  }
-
-  afterEvaluate {
-    if (project.tasks.findByName('check')) {
-      check.dependsOn('checkstyle')
-    }
-  }
+  // TODO need to be setup
+//  apply plugin: 'checkstyle'
+//  checkstyle{
+//    configFile file("${rootDir}/config/checkstyle/checkstyle.xml")
+//    toolVersion = '8.6'
+//  }
+//
+//  task checkstyle(type: Checkstyle) {
+//    source 'src/main/java'
+//    ignoreFailures false
+//    showViolations true
+//    include '**/*.java'
+//    classpath = files()
+//  }
+//
+//  afterEvaluate {
+//    if (project.tasks.findByName('check')) {
+//      check.dependsOn('checkstyle')
+//    }
+//  }
 }
 
 task clean(type: Delete) {
