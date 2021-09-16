@@ -84,7 +84,9 @@ public class MainActivity extends Activity {
     Logger.w("my log message with my tag");
 
     Logger.clearLogAdapters();
-    Logger.addLogAdapter(new DiskLogAdapter("customfoldername", 2097152)); //create a DiskLogAdapter with folder name customfoldername and 2MB max file size
+    // create a DiskLogAdapter with folder name customfoldername and 2MB max file size
+    Logger.addLogAdapter(new DiskLogAdapter("customfoldername", 2097152));
+
 
     Logger.i("Info log written in custom folder");
   }
