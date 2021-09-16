@@ -5,9 +5,9 @@
 <img align="right" src='https://github.com/orhanobut/logger/blob/master/art/logger-logo.png' width='128' height='128'/>
 
 ### Logger
-Simple, pretty and powerful logger for android
+Simple, pretty and powerful logger for android (Java8)
 
-Forked project from Orhan Obut
+Forked project from [Orhan Obut project](https://github.com/orhanobut/logger)
 
 ### Setup
 
@@ -23,9 +23,7 @@ allprojects {
 
 2. Add the dependency
 ```
-dependencies {
-        implementation 'com.github.lupaulus:logger:master-SNAPSHOT'
-}
+implementation 'com.github.lupaulus:logger:2.3.0'
 ```
 
 ### Into code
@@ -97,7 +95,8 @@ Logger.addLogAdapter(new AndroidLogAdapter() {
 ```
 
 ### Save logs to the file
-//TODO: More information will be added later
+
+**For now, only the CSV Format is supported !**
 ```java
 Logger.addLogAdapter(new DiskLogAdapter());
 ```
