@@ -7,7 +7,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:4.1.2'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    classpath 'org.jacoco:org.jacoco.core:0.8.5'
+    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.16.0'
   }
 }
 
@@ -41,20 +41,15 @@ subprojects { project ->
       check.dependsOn('checkstyle')
     }
   }
-  apply plugin: 'jacoco'
 
-  jacoco {
-    toolVersion = "0.8.5"
-  }
-  tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
-  }
+  apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 }
 
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
+
 
 ext {
   minSdkVersion = 8
