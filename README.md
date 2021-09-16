@@ -2,6 +2,7 @@
 [![](https://jitpack.io/v/lupaulus/logger.svg)](https://jitpack.io/#lupaulus/logger)
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/gxyyq3wD)
 [![Android CI](https://github.com/lupaulus/logger/actions/workflows/android.yml/badge.svg)](https://github.com/lupaulus/logger/actions/workflows/android.yml)
+[![codecov](https://codecov.io/gh/lupaulus/logger/branch/master/graph/badge.svg?token=9VGOA3X5TL)](https://codecov.io/gh/lupaulus/logger)
 <img align="right" src='https://github.com/orhanobut/logger/blob/master/art/logger-logo.png' width='128' height='128'/>
 
 ### Logger
