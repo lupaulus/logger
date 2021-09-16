@@ -41,9 +41,7 @@ subprojects { project ->
       check.dependsOn('checkstyle')
     }
   }
-
   apply plugin: 'com.vanniktech.android.junit.jacoco'
-
 }
 
 task clean(type: Delete) {
