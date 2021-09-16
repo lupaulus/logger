@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -27,4 +26,4 @@ jobs:
     - name: Codecov
       uses: codecov/codecov-action@v2.1.0
       with:
-        token: ${{secret.CODECOV_TOKEN}}
+        token: ${{ secrets.CODECOV_TOKEN }}
