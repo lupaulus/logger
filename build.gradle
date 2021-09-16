@@ -7,6 +7,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:4.1.2'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    classpath 'org.jacoco:org.jacoco.core:0.8.5'
   }
 }
 
@@ -40,6 +41,15 @@ subprojects { project ->
       check.dependsOn('checkstyle')
     }
   }
+  apply plugin: 'jacoco'
+
+  jacoco {
+    toolVersion = "0.8.5"
+  }
+  tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+  }
+
 }
 
 task clean(type: Delete) {
@@ -60,5 +70,5 @@ ext.deps = [
     mockito           : "org.mockito:mockito-core:2.19.0",
     json              : "org.json:json:20160810",
     supportAnnotations: 'androidx.annotation:annotation:1.0.0',
-    kotlin            : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    kotlin            : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
 ]
