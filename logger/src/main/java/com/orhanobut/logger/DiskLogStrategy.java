@@ -16,7 +16,7 @@ import static com.orhanobut.logger.Utils.checkNotNull;
  * Abstract class that takes care of background threading the file log operation on Android.
  * implementing classes are free to directly perform I/O operations there.
  *
- * Writes all logs to the disk with CSV format.
+ * Writes all logs to the disk with default CSV format.
  */
 public class DiskLogStrategy implements LogStrategy {
 

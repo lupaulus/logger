@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.File;
-import java.nio.file.InvalidPathException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -93,7 +92,7 @@ public class CsvFormatStrategy implements FormatStrategy {
   }
 
   public static final class Builder {
-    private static int MAX_BYTES = 500 * 1024; // default size 500K averages to a 4000 lines per file
+    private static int maxBytes = 500 * 1024; // default size 500K averages to a 4000 lines per file
 
     Date date;
     SimpleDateFormat dateFormat;
@@ -102,22 +101,19 @@ public class CsvFormatStrategy implements FormatStrategy {
     String folderName = "logger"; //default folder name
 
     // Default constructor, will use logger as folder name and 500K as default size
-    private Builder(){
-
-    }
+    private Builder() { }
 
     private Builder(String foldername, int maxsize) {
         if (foldername == null || foldername.length() == 0) {
-          //folder name seems to be invalid, throw an exception (just basic check, there could be invalid characters for folder name those will throw exception at time of writing
+          //folder name seems to be invalid, throw an exception (just basic check, there could be invalid
+          // characters for folder name those will throw exception at time of writing
           throw new IllegalArgumentException("Folder name you have provided seems to be invalid. " + foldername);
         }
-        if(maxsize <= 0)
-        {
+        if (maxsize <= 0) {
           throw new IllegalArgumentException("File max size must be greater than 0, you have provided " + maxsize);
         }
-
         folderName = foldername;
-        MAX_BYTES = maxsize;
+        maxBytes = maxsize;
     }
 
     @NonNull public Builder date(@Nullable Date val) {
@@ -153,7 +149,7 @@ public class CsvFormatStrategy implements FormatStrategy {
 
         HandlerThread ht = new HandlerThread("AndroidFileLogger." + folder);
         ht.start();
-        Handler handler = new DiskLogStrategy.WriteHandler(ht.getLooper(), folder, MAX_BYTES);
+        Handler handler = new DiskLogStrategy.WriteHandler(ht.getLooper(), folder, maxBytes);
         logStrategy = new DiskLogStrategy(handler);
       }
       return new CsvFormatStrategy(this);

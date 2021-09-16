@@ -18,8 +18,7 @@ public class DiskLogAdapter implements LogAdapter {
     formatStrategy = CsvFormatStrategy.newBuilder().build();
   }
 
-  public DiskLogAdapter(String foldername, int maxfilesize)
-  {
+  public DiskLogAdapter(String foldername, int maxfilesize) {
     formatStrategy = CsvFormatStrategy.newBuilder(foldername, maxfilesize).build();
   }
 
