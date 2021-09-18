@@ -44,7 +44,6 @@ public class DiskLogStrategy implements LogStrategy {
       this.maxFileSize = maxFileSize;
     }
 
-    @SuppressWarnings("checkstyle:emptyblock")
     @Override public void handleMessage(@NonNull Message msg) {
       String content = (String) msg.obj;
 
