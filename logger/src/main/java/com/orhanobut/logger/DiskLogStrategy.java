@@ -3,14 +3,10 @@ package com.orhanobut.logger;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import static com.orhanobut.logger.Utils.checkNotNull;
 
 /**
@@ -36,10 +32,10 @@ public class DiskLogStrategy implements LogStrategy {
 
   static class WriteHandler extends Handler {
 
-    @NonNull private final String folder;
+    @NonNull private final File folder;
     private final int maxFileSize;
 
-    WriteHandler(@NonNull Looper looper, @NonNull String folder, int maxFileSize) {
+    WriteHandler(@NonNull Looper looper, @NonNull File folder, int maxFileSize) {
       super(checkNotNull(looper));
       this.folder = checkNotNull(folder);
       this.maxFileSize = maxFileSize;
@@ -98,14 +94,14 @@ public class DiskLogStrategy implements LogStrategy {
       fileWriter.write(content.getBytes());
     }
 
-    private File getLogFile(@NonNull String folderName, @NonNull String fileName) throws IOException {
+    private File getLogFile(@NonNull File folderName, @NonNull String fileName) throws IOException {
       checkNotNull(folderName);
       checkNotNull(fileName);
 
-      File folder = new File(folderName);
-      if (!folder.exists()) {
+      File folderFile = folderName;
+      if (!folderFile.exists()) {
         // Create and check if folder is correct created
-        if(!folder.mkdirs())
+        if(!folderFile.mkdirs())
         {
           throw new IOException(String.format("Folder %s not created !",folderName));
         }
@@ -115,11 +111,11 @@ public class DiskLogStrategy implements LogStrategy {
       File newFile;
       File existingFile = null;
 
-      newFile = new File(folder, String.format("%s_%s.csv", fileName, newFileCount));
+      newFile = new File(folderFile, String.format("%s_%s.csv", fileName, newFileCount));
       while (newFile.exists()) {
         existingFile = newFile;
         newFileCount++;
-        newFile = new File(folder, String.format("%s_%s.csv", fileName, newFileCount));
+        newFile = new File(folderFile, String.format("%s_%s.csv", fileName, newFileCount));
       }
 
       if (existingFile != null) {
