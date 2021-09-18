@@ -1,6 +1,5 @@
 package com.orhanobut.logger;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.annotation.NonNull;

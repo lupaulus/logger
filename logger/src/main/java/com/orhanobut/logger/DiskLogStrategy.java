@@ -5,8 +5,11 @@ import android.os.Looper;
 import android.os.Message;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-import java.io.*;
 import static com.orhanobut.logger.Utils.checkNotNull;
 
 /**
@@ -47,32 +50,26 @@ public class DiskLogStrategy implements LogStrategy {
 
       BufferedOutputStream fileWriter = null;
 
-
       try {
         File logFile = getLogFile(folder, "logs");
-        fileWriter = new BufferedOutputStream(new FileOutputStream(logFile,true));
+        fileWriter = new BufferedOutputStream(new FileOutputStream(logFile, true));
 
         writeLog(fileWriter, content);
 
         fileWriter.flush();
-      }
-      catch (IOException e)
-      {
-        if (fileWriter != null)
-        {
+      } catch (IOException e) {
+        if (fileWriter != null) {
           try {
             fileWriter.flush();
             fileWriter.close();
-          }
-          catch (IOException e1) {
+          } catch (IOException e1) {
             System.err.println("Error writing DiskLogStrategy");
             System.err.println(e1);
           }
         }
-      }
-      finally {
+      } finally {
         try {
-          if(fileWriter != null)
+          if (fileWriter != null)
             fileWriter.close();
         } catch (IOException e) {
           e.printStackTrace();
@@ -101,9 +98,8 @@ public class DiskLogStrategy implements LogStrategy {
       File folderFile = folderName;
       if (!folderFile.exists()) {
         // Create and check if folder is correct created
-        if(!folderFile.mkdirs())
-        {
-          throw new IOException(String.format("Folder %s not created !",folderName));
+        if (!folderFile.mkdirs()) {
+          throw new IOException(String.format("Folder %s not created !", folderName));
         }
       }
 
