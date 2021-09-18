@@ -3,10 +3,7 @@ package com.orhanobut.logger
 import com.orhanobut.logger.Logger.*
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Matchers.any
-import org.mockito.Matchers.contains
-import org.mockito.Matchers.eq
-import org.mockito.Matchers.isNull
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
@@ -16,7 +13,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.MockitoAnnotations.initMocks
 import java.util.*
-// TODO Check why ?
+
 class LoggerPrinterTest {
 /*
   private val printer = LoggerPrinter()
@@ -236,5 +233,5 @@ class LoggerPrinterTest {
 
     verify(adapter).log(eq(DEBUG), isNull(String::class.java), contains("java.lang.Throwable: exception"))
   }
-  */
+*/
 }
