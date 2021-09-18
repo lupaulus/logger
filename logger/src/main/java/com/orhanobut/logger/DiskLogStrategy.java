@@ -45,7 +45,8 @@ public class DiskLogStrategy implements LogStrategy {
       this.maxFileSize = maxFileSize;
     }
 
-    @Override public void handleMessage(@NonNull Message msg) {
+    @Override
+    public void handleMessage(@NonNull Message msg) {
       String content = (String) msg.obj;
 
       BufferedOutputStream fileWriter = null;
@@ -58,7 +59,6 @@ public class DiskLogStrategy implements LogStrategy {
         writeLog(fileWriter, content);
 
         fileWriter.flush();
-        fileWriter.close();
       }
       catch (IOException e)
       {
@@ -72,6 +72,14 @@ public class DiskLogStrategy implements LogStrategy {
             System.err.println("Error writing DiskLogStrategy");
             System.err.println(e1);
           }
+        }
+      }
+      finally {
+        try {
+          if(fileWriter != null)
+            fileWriter.close();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
     }
