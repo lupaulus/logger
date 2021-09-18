@@ -24,7 +24,7 @@ allprojects {
 
 2. Add the dependency
 ```
-implementation 'com.github.lupaulus:logger:2.3.0'
+implementation 'com.github.lupaulus:logger:2.3.2'
 ```
 
 ### Into code
@@ -99,17 +99,12 @@ Logger.addLogAdapter(new AndroidLogAdapter() {
 
 **For now, only the CSV Format is supported !**
 ```java
-Logger.addLogAdapter(new DiskLogAdapter());
+// Local App folder in Android/data/{package_name}
+File logsFolder = new File(context.getExternalFilesDir(null));
+int maxBytesSize = 5000;
+Logger.addLogAdapter(new DiskLogAdapter(logsFolder,maxBytesSize));
 ```
 
-Add custom tag to Csv format strategy
-```java
-FormatStrategy formatStrategy = CsvFormatStrategy.newBuilder()
-  .tag("custom")
-  .build();
-  
-Logger.addLogAdapter(new DiskLogAdapter(formatStrategy));
-```
 
 ### How it works
 <img src='https://github.com/orhanobut/logger/blob/master/art/how_it_works.png'/>

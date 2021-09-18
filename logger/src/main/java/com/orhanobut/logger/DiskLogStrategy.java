@@ -5,9 +5,9 @@ import android.os.Looper;
 import android.os.Message;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static com.orhanobut.logger.Utils.checkNotNull;
@@ -35,34 +35,44 @@ public class DiskLogStrategy implements LogStrategy {
 
   static class WriteHandler extends Handler {
 
-    @NonNull private final String folder;
+    @NonNull private final File folder;
     private final int maxFileSize;
 
-    WriteHandler(@NonNull Looper looper, @NonNull String folder, int maxFileSize) {
+    WriteHandler(@NonNull Looper looper, @NonNull File folder, int maxFileSize) {
       super(checkNotNull(looper));
       this.folder = checkNotNull(folder);
       this.maxFileSize = maxFileSize;
     }
 
-    @Override public void handleMessage(@NonNull Message msg) {
+    @Override
+    public void handleMessage(@NonNull Message msg) {
       String content = (String) msg.obj;
 
-      FileWriter fileWriter = null;
-      File logFile = getLogFile(folder, "logs");
+      BufferedOutputStream fileWriter = null;
 
       try {
-        fileWriter = new FileWriter(logFile, true);
+        File logFile = getLogFile(folder, "logs");
+        fileWriter = new BufferedOutputStream(new FileOutputStream(logFile, true));
 
         writeLog(fileWriter, content);
 
         fileWriter.flush();
-        fileWriter.close();
       } catch (IOException e) {
         if (fileWriter != null) {
           try {
             fileWriter.flush();
             fileWriter.close();
-          } catch (IOException e1) { /* fail silently */ }
+          } catch (IOException e1) {
+            System.err.println("Error writing DiskLogStrategy");
+            System.err.println(e1);
+          }
+        }
+      } finally {
+        try {
+          if (fileWriter != null)
+            fileWriter.close();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
     }
@@ -74,32 +84,34 @@ public class DiskLogStrategy implements LogStrategy {
      *
      * @param fileWriter an instance of FileWriter already initialised to the correct file
      */
-    private void writeLog(@NonNull FileWriter fileWriter, @NonNull String content) throws IOException {
+    private void writeLog(@NonNull BufferedOutputStream fileWriter, @NonNull String content) throws IOException {
       checkNotNull(fileWriter);
       checkNotNull(content);
-
-      fileWriter.append(content);
+      // Default charset encoding
+      fileWriter.write(content.getBytes());
     }
 
-    private File getLogFile(@NonNull String folderName, @NonNull String fileName) {
+    private File getLogFile(@NonNull File folderName, @NonNull String fileName) throws IOException {
       checkNotNull(folderName);
       checkNotNull(fileName);
 
-      File folder = new File(folderName);
-      if (!folder.exists()) {
-        //TODO: What if folder is not created, what happens then?
-        folder.mkdirs();
+      File folderFile = folderName;
+      if (!folderFile.exists()) {
+        // Create and check if folder is correct created
+        if (!folderFile.mkdirs()) {
+          throw new IOException(String.format("Folder %s not created !", folderName));
+        }
       }
 
       int newFileCount = 0;
       File newFile;
       File existingFile = null;
 
-      newFile = new File(folder, String.format("%s_%s.csv", fileName, newFileCount));
+      newFile = new File(folderFile, String.format("%s_%s.csv", fileName, newFileCount));
       while (newFile.exists()) {
         existingFile = newFile;
         newFileCount++;
-        newFile = new File(folder, String.format("%s_%s.csv", fileName, newFileCount));
+        newFile = new File(folderFile, String.format("%s_%s.csv", fileName, newFileCount));
       }
 
       if (existingFile != null) {

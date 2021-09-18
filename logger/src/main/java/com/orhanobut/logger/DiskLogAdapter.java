@@ -3,6 +3,8 @@ package com.orhanobut.logger;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.File;
+
 import static com.orhanobut.logger.Utils.checkNotNull;
 
 /**
@@ -18,8 +20,8 @@ public class DiskLogAdapter implements LogAdapter {
     formatStrategy = CsvFormatStrategy.newBuilder().build();
   }
 
-  public DiskLogAdapter(String foldername, int maxfilesize) {
-    formatStrategy = CsvFormatStrategy.newBuilder(foldername, maxfilesize).build();
+  public DiskLogAdapter(File folder, int maxfilesize) {
+    formatStrategy = CsvFormatStrategy.newBuilder(folder, maxfilesize).build();
   }
 
   public DiskLogAdapter(@NonNull FormatStrategy formatStrategy) {

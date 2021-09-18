@@ -1,6 +1,5 @@
 package com.orhanobut.logger;
 
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.annotation.NonNull;
@@ -38,7 +37,7 @@ public class CsvFormatStrategy implements FormatStrategy {
     tag = builder.tag;
   }
 
-  @NonNull public static Builder newBuilder(String foldername, int maxsize) {
+  @NonNull public static Builder newBuilder(File foldername, int maxsize) {
     return new Builder(foldername, maxsize);
   }
 
@@ -98,21 +97,21 @@ public class CsvFormatStrategy implements FormatStrategy {
     SimpleDateFormat dateFormat;
     LogStrategy logStrategy;
     String tag = "PRETTY_LOGGER";
-    String folderName = "logger"; //default folder name
+    File folderFile; //default folder name
 
     // Default constructor, will use logger as folder name and 500K as default size
     private Builder() { }
 
-    private Builder(String foldername, int maxsize) {
-        if (foldername == null || foldername.length() == 0) {
+    private Builder(File fileFolder, int maxsize) {
+        if (fileFolder == null || fileFolder.length() == 0) {
           //folder name seems to be invalid, throw an exception (just basic check, there could be invalid
           // characters for folder name those will throw exception at time of writing
-          throw new IllegalArgumentException("Folder name you have provided seems to be invalid. " + foldername);
+          throw new IllegalArgumentException("Folder name you have provided seems to be invalid. " + fileFolder);
         }
         if (maxsize <= 0) {
           throw new IllegalArgumentException("File max size must be greater than 0, you have provided " + maxsize);
         }
-        folderName = foldername;
+        folderFile = fileFolder;
         maxBytes = maxsize;
     }
 
@@ -144,12 +143,11 @@ public class CsvFormatStrategy implements FormatStrategy {
         dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS", Locale.UK);
       }
       if (logStrategy == null) {
-        String diskPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String folder = diskPath + File.separatorChar + folderName;
 
-        HandlerThread ht = new HandlerThread("AndroidFileLogger." + folder);
+
+        HandlerThread ht = new HandlerThread("AndroidFileLogger." + folderFile);
         ht.start();
-        Handler handler = new DiskLogStrategy.WriteHandler(ht.getLooper(), folder, maxBytes);
+        Handler handler = new DiskLogStrategy.WriteHandler(ht.getLooper(), folderFile, maxBytes);
         logStrategy = new DiskLogStrategy(handler);
       }
       return new CsvFormatStrategy(this);
